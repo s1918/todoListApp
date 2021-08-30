@@ -85,20 +85,6 @@ $(document).ready(function(){
   addEventListenterToDeleteAll();
   });
 
-  // const addEventListenterToLi = () => {
-  //   $('li').on('click', function(){
-  //     var item = $(this).text().replace(/' '/g, "-");
-  //     $.ajax({
-  //       type: 'DELETE',
-  //       url: '/todo/clear-item/' + item,
-  //       // url: '/todo/cool',
-  //       success: function(data){
-  //         //do something with the data via front-end framework
-  //         refreshtoDoList(data);
-  //       }
-  //     });
-  //   });
-  // };
 
   // tList.append(todolist.map((row) => `<li>
   // <p>
