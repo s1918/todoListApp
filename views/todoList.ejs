@@ -1,0 +1,6 @@
+<ul id="todo-list">
+    <!-- <%- todos.map((row) => ``).reduce((acc, ele) => acc += ele, '') %> --> 
+  <% todos.forEach(function(item){ %>
+    <%- include('todoListItem', {item: item}); %>
+  <% }); %>
+</ul>

@@ -1,0 +1,8 @@
+ <!-- Available variable: todoitem -->
+
+<%- include('header') -%>
+        <h1>To do </h1>
+        <div id="todo-table">
+            <%- include('todoListItem', {item: todoitem }) %>
+        </div>
+<%- include('footer') -%>
