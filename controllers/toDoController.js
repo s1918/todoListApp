@@ -1,4 +1,3 @@
-
 // let todoitems = [{item: "milk", descittion: 'dirnk it', catg: 'food'}, {item: "bike"}, {item: 'bread'}, {item: 'coco'}];
 // console.log(todoitems[0])
 
@@ -10,103 +9,104 @@ const DB_STRING = 'mongodb+srv://test:test@cluster0.7bgts.mongodb.net/cluster0?r
 mongoose.connect(DB_STRING, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // creating a schema
-var todoSchema = new mongoose.Schema({
-    item: String,
-    desc: String,
-    catg: String,
-    id: String,
-    date: String
+const todoSchema = new mongoose.Schema({
+  item: String,
+  desc: String,
+  catg: String,
+  id: String,
+  date: String,
 });
 
+// creating a model based on a schema
+const Todo = mongoose.model('Todo', todoSchema);
 
-// creating a model based on a schema 
-let Todo = mongoose.model('Todo', todoSchema);
-
-module.exports = function(app){
+module.exports = (app) => {
+  app.get('/todo', (req, res) => {
     
-app.get('/todo', function(req,res){
-    Todo.find({}, function(err, data){
-        if (err) throw err;
-        res.render('todo', {todos: data});
-    })
-});
+    Todo.find({}, (err, data) => {
+      if (err) throw err;
+      res.render('todo', { todos: data });
+    });
+  });
 
-app.get('/todo/:itemId', function(req,res){
+  app.get('/todo/:itemId', function(req,res){
     // 
     Todo.findOne({id: req.params.itemId}, function(err, data){
-        if (err) throw err;
-        res.render('item', {todoitem: data});
+      if (err) throw err;
+      res.render('item', {todoitem: data});
     })
     // res.render('test');
-});
+  });
 
-//catg
-// app.get('/catg', function(req,res){
-//     Todo.find({}, function(err, data){
-//         if (err) throw err;
-//         res.render('todo', {todos: data});
-//     })
-// });
+  //catg
+  // app.get('/catg', function(req,res){
+  //     Todo.find({}, function(err, data){
+  //         if (err) throw err;
+  //         res.render('todo', {todos: data});
+  //     })
+  // });
 
 
-app.post('/todo', function(req,res){
+  app.post('/todo', function(req,res){
     Todo(req.body).save(function(err, data){
-        if (err) throw err;
+      if (err) throw err;
 
-        Todo.find({}, function(err, data){
-            if (err) throw err;
-            res.render('todoList', {todos: data});
-            // res.json(data);
-        });
+      Todo.find({}, function(err, data){
+        if (err) throw err;
+        res.render('todoList', {todos: data});
+        // res.json(data);
+      });
     })
-});
+  });
 
-app.delete('/todo/clear-item/:item', function(req, res){
+
+
+  app.delete('/todo/clear-item/:item', function(req, res){
     Todo.find({id: req.params.item}).remove(function(err, data){
+      if (err) throw err;
+      // res.json(data);
+      Todo.find({}, function(err, data){
         if (err) throw err;
-        // res.json(data);
-        Todo.find({}, function(err, data){
-            if (err) throw err;
-            res.json(data);
-        });
+        res.json(data);
+      });
     });
-});
+  });
 
-//clear all
-app.delete('/todo/clear-all', function(req, res){
+  //clear all
+  app.delete('/todo/clear-all', function(req, res){
     Todo.find({}).remove(function(err, data){
+      if (err) throw err;
+      // res.json(data);
+      Todo.find({}, function(err, data){
         if (err) throw err;
-        // res.json(data);
-        Todo.find({}, function(err, data){
-            if (err) throw err;
-            res.json(data);
-        });
+        res.json(data);
+      });
     });
-});
+  });
 
 
-// delete item
-// app.delete('/todo/clear-item/:item', function(req, res){
-//     Todo.find({item: req.params.item.replace(/\-/g, " ")}).remove(function(err, data){
-//         if (err) throw err;
-//         // res.json(data);
-//         Todo.find({}, function(err, data){
-//             if (err) throw err;
-//             res.json(data);
-//         });
-//     });
-// });
+  // delete item
+  // app.delete('/todo/clear-item/:item', function(req, res){
+  //     Todo.find({item: req.params.item.replace(/\-/g, " ")}).remove(function(err, data){
+  //         if (err) throw err;
+  //         // res.json(data);
+  //         Todo.find({}, function(err, data){
+  //             if (err) throw err;
+  //             res.json(data);
+  //         });
+  //     });
+  // });
 
-// app.delete('/todo/clear-dublct', function(req, res){
-//     Todo.find({}).remove(function(err, data){
-//         if (err) throw err;
-//         // res.json(data);
-//         Todo.find({}, function(err, data){
-//             if (err) throw err;
-//             res.json(data);
-//         });
-//     });
-// });
+  // app.delete('/todo/clear-dublct', function(req, res){
+  //     Todo.find({}).remove(function(err, data){
+  //         if (err) throw err;
+  //         // res.json(data);
+  //         Todo.find({}, function(err, data){
+  //             if (err) throw err;
+  //             res.json(data);
+  //         });
+  //     });
+  // });
 
 }
 

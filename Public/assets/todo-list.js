@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 $(document).ready(function(){
    //this line is to watch the result in console , you can remove it later	
 
