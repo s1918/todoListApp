@@ -1,21 +1,26 @@
 /* eslint-disable no-undef */
 $(document).ready(function(){
-   //this line is to watch the result in console , you can remove it later	
-
-
-
-
-  
+   //this line is to watch the result in console , you can remove it later
+  // const refreshtoCtgList = (ctglist) => {
+  //   let cList = $('#ctgs');
+  //   let dropDown = $('#dropdown')
+  //   cList.remove();
+  //   dropdown.append(ctglist);
+  //   addEventListenterToLi();
+  //   addEventListenterToDeleteAll();
+  //   addEventListenterCtgAddition();
+  // }	
 
   const refreshtoDoList = (todolist) => {
     // reload()
     // $("#todo-list").load(location.href + " #todo-list")
     let tList = $('#todo-list');
-    let todoTable = $('#todo-table')
-    tList.remove()
-    todoTable.append(todolist)
+    let todoTable = $('#todo-table');
+    tList.remove();
+    todoTable.append(todolist);
     addEventListenterToLi();
     addEventListenterToDeleteAll();
+    // addEventListenterCtgAddition();
   }
 
   function getRandomInt(max) {
@@ -25,14 +30,11 @@ $(document).ready(function(){
 // delete this
   const addEventListenterToLi = () => {
     $('.dlt').on('click', function(){
-      console.log('clicked');
       // var item1 = $(this).closest('li').find('h3:not(:first-child)').text();
       var item1 = $(this).attr('id')
-      console.log($(this).attr('id'))
       $.ajax({
         type: 'DELETE',
         url: '/todo/clear-item/' + item1,
-        // url: '/todo/cool',
         success: function(data){
           //do something with the data via front-end framework
           refreshtoDoList(data);
@@ -41,6 +43,22 @@ $(document).ready(function(){
     });
   };
   
+// add catigories
+  // const addEventListenterCtgAddition = () => {
+    $('#ctg-div').on('submit', function(){
+      let ctg = $('#ctg-input');
+      let todoCtg = {ctg: ctg.val()};
+      $.ajax({
+        type: 'POST',
+        url: '/todo/add-ctg',
+        data: todoCtg,
+        success: function(data){
+          refreshtoDoList(data);
+        }
+      })
+    });
+  // };
+
 // delete all
   const addEventListenterToDeleteAll = () => {
     $('#clear').on('click', function(){
@@ -54,22 +72,19 @@ $(document).ready(function(){
     });
   };
 
-
-  $('form').on('submit', function(){
+// add items
+  $('#item-list').on('submit', function(){
       // console.log($('form').serialize());
-      // var item = $('form input');
-      var item = $('form #item');
-      var desc = $('form #desc');
-      var catg = $('form #catg');
-      var randomID = getRandomInt(99999)
+      let item = $('form #item');
+      let desc = $('form #desc');
+      let randomID = getRandomInt(99999)
       let time = new Date().toLocaleTimeString();
       let date = new Date().toLocaleDateString();
-      
-      var todo = {item: item.val(), desc: desc.val(), catg: catg.val(), id: randomID.toString(), date: date + '-' + time};
-
+      let ctg = $('#ctgs').find(":selected").text();
+      let todo = {item: item.val(), desc: desc.val(), ctg: ctg, id: randomID.toString(), date: date + '-' + time};
       $.ajax({
         type: 'POST',
-        url: '/todo',
+        url: '/todo/add-item',
         data: todo,
         success: function(data){
           // location.reload();
@@ -78,14 +93,15 @@ $(document).ready(function(){
       });
       item.val('');
       desc.val('');
-      catg.val('');
       return false;
   });
 
   addEventListenterToLi();
   addEventListenterToDeleteAll();
+  // addEventListenterCtgAddition();
   });
 
+  
 
   // tList.append(todolist.map((row) => `<li>
   // <p>

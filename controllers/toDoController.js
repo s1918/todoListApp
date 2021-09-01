@@ -1,10 +1,6 @@
-// let todoitems = [{item: "milk", descittion: 'dirnk it', catg: 'food'}, {item: "bike"}, {item: 'bread'}, {item: 'coco'}];
-// console.log(todoitems[0])
-
 const mongoose = require('mongoose');
 
 // connect to database 
-
 const DB_STRING = 'mongodb+srv://test:test@cluster0.7bgts.mongodb.net/cluster0?retryWrites=true&w=majority';
 mongoose.connect(DB_STRING, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -12,15 +8,23 @@ mongoose.connect(DB_STRING, { useNewUrlParser: true, useUnifiedTopology: true })
 const todoSchema = new mongoose.Schema({
   item: String,
   desc: String,
-  catg: String,
+  ctg: String,
   id: String,
   date: String,
 });
 
+const todoCtgSchema = new mongoose.Schema({
+  ctg: String,
+} , {
+  collection: 'todoCtg'
+});
+
 // creating a model based on a schema
 const Todo = mongoose.model('Todo', todoSchema);
+const todoCtg = mongoose.model('todoCtg', todoCtgSchema);
 
 module.exports = (app) => {
+
   app.get('/todo', (req, res) => {
     
     Todo.find({}, (err, data) => {
@@ -38,17 +42,8 @@ module.exports = (app) => {
     // res.render('test');
   });
 
-  //catg
-  // app.get('/catg', function(req,res){
-  //     Todo.find({}, function(err, data){
-  //         if (err) throw err;
-  //         res.render('todo', {todos: data});
-  //     })
-  // });
-
-
-  app.post('/todo', function(req,res){
-    Todo(req.body).save(function(err, data){
+  app.post('/todo/add-item', function(req,res){
+    Todo(req.body).save(function(err, todo){
       if (err) throw err;
 
       Todo.find({}, function(err, data){
@@ -56,8 +51,21 @@ module.exports = (app) => {
         res.render('todoList', {todos: data});
         // res.json(data);
       });
-    })
+    });
   });
+
+// post new catgs 
+  app.post('/todo/add-ctg', function(req,res){
+    todoCtg(req.body).save(function(err, data){
+      if (err) throw err;
+      todoCtg.find({}, function(err, data){
+        if (err) throw err;
+        // res.render('newCtgForm', {ctgs: data})
+      })
+    });
+  });
+
+
 
 
 

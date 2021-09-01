@@ -1,0 +1,15 @@
+<div id="dropdown">
+    <label for="ctgs">Choose a catigory:</label>
+    <p class="select" id="catigory">    
+        <select name="ctgs" id="ctgs" placeholder="select">
+            <% ctgs.forEach(function(ctg){ %>
+                <%- include('ctgListItems', {ctg : ctg}); -%>
+            <% }); %>
+        </select>
+    </p>
+    <div id="ctg-div">
+        <button type="button" id='add-ctg-btn'> Add a catigory</button>
+        <!-- <label for="add-ctg">Add catigory</label> -->
+        <input id="add-ctg" type="text" name="add-ctg" placeholder="Add more catigories here..">
+    </div>
+</div>

@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body{
     background: #0d1521;
     font-family: tahoma;
@@ -20,20 +26,114 @@ body{
     clear: both;
 }
 
-
 input{
-    margin-right: 5px;
-    width: 90%;
+    display: inline-block;
+    width: 79.0%;
     padding: 20px;
     background:#181c22;
     border: 0;
-    float: left;
     font-size: 20px;
     color: #989898;
 }
 
+label{
+    display: inline-block;
+    width: 20%;
+    padding: 22px;
+    background-color: #23282e;
+    border: 0;
+    /* border-radius: 1ch; */
+    text-align: center;
+}
+
+div{
+    margin-top: 5px;
+    padding: 0px;
+    width: 100%;
+}
+
+#desc{
+    display: block;
+    margin-top: 5px;
+    width: 99.5%;
+    margin-right: 0px;
+    font-size: 15pt;
+}
+
+#discr label{
+    position: relative;
+    width: 99.5%;
+    border: 0px;
+}
+
+#category label{
+    display: inline;
+    position: relative;
+    width: 20%;
+}
+
+#category {
+    position: relative;
+    display: inline-block;
+    width: 10;
+}
+
+select {
+    /* // A reset of styles, including removing the default dropdown arrow */
+    appearance: none;
+    /* // Additional resets for further consistency */
+    border: none;
+    padding: 10px;
+    margin: 0;
+    width: 100%;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: inherit;
+    line-height: inherit;
+    outline: none
+}
+
+
+:root {
+    --select-border: #777;
+    --select-focus: blue;
+    --select-arrow: var(--select-border);
+}
+
+.select {
+    display: inline-block;
+    width: 100%;
+    min-width: 15ch;
+    max-width: 30%;
+    border: 0px solid var(--select-border);
+    border-radius: 0;
+    padding: 12px 0.5em;
+    font-size: inherit;
+    cursor: pointer;
+    line-height: inherit;
+    margin: 0;
+    color: lawngreen;
+    background-color: rgb(247, 247, 247);
+    background-image: linear-gradient(to top, #23282e, #23282e 33%);
+}
+
+.select select{
+    background-color: #373e47;
+    border-radius: 3px;
+}
+
+#ctg-div input{
+    width: 74%;
+    margin: 0%;
+}
+
+#ctg-div button{
+    margin: 0%;
+    margin-right: 5px;
+}
+
 button{
-    
+
     padding: 20px;
     margin-right: 5px;
     margin-top: 5px;
@@ -45,21 +145,6 @@ button{
     color: #fff;
     cursor: pointer;
     font-size: 20px;
-}
-
-label{
-    float: left;
-    width: 10%;
-    padding: 10px;
-    background-color: #23282e;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    /* border-radius: 1ch; */
-    text-align: center;
-}
-
- #catg{
-    height: 30px;
 }
 
 ul{
@@ -116,3 +201,6 @@ li button{
     cursor: pointer;
     /* border-radius: 1ch; */
 }
+
+
+/* ////////////////////////// */

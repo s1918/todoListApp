@@ -1,35 +1,31 @@
-<form>
-    <p>
-        <label for="item">What to do?</label><br>
+<form id="item-list">
+    <div>
+        <label for="item">What to do?</label>
         <input id="item" type="text" name="item" placeholder="Add new item.." required>
-    </p>
-    <p >
-        <label for="desc">Description</label><br>
-        <input id="desc" type="text" name="desc" placeholder="Add item's description here.." >
-    </p>
-    <p>
-        <label for="catg">Category</label><br>
-        <input id="catg" type="text" name="catg" placeholder="Item's Category..">
-    </p>
-    <p>
-        <!-- <label for="date">Date</label><br>
-        <input id="date" type="date" name="date" placeholder="Item' date..">
-    </p> -->
-    <!-- <p>
-        <label for="id" id="id">ID:</label><br>
-    </p> -->
-    <!-- <input type="password" name="pass" placeholder="Select Color.." required> -->
-    <button type="submit">Add Item</button>
-    <button type="button" id='clear'> Clear All</button>
-    <!-- <form target="/catg">
-        <label for="catgs">Choose a catigory:</label>
-        <select name="catgs" id="catgs">
-          <option value="food">food</option>
-          <option value="personal">personal</option>
-          <option value="work">work</option>
-          <option value="school">school</option>
-        </select>
-        <br><br>
-        <input type="submit" value="Submit">
-      </form> -->
+    </div>
+    <div id='discr'>
+        <label for="desc">Description</label>
+        <input id="desc" type="text" name="desc" placeholder="Add item's description here.." required>
+    </div>
+    <div id="dropdown">
+        <label for="ctgs">Choose a catigory:</label>
+        <p class="select" id="catigory">    
+            <select name="ctgs" id="ctgs" placeholder="select">
+                <option value="food">Food</option>
+                <option value="personal">Personal</option>
+                <option value="work">Work</option>
+                <option value="school">School</option>
+            </select>
+        </p>
+    </div>
+    <div>
+        <button type="submit">Add item</button>
+        <button type="button" id='clear'> Clear all</button>
+    </div>
+</form>
+<form id="ctg-div">
+    <div>
+        <button type="submit" id='ctg-submit-btn'> Add a catigory</button>
+        <input id="ctg-input" type="text" name="ctg-input" placeholder="Add more catigories here.." required>
+    </div>
 </form>
