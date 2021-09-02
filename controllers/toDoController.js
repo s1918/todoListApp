@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
-
 // connect to database 
 const DB_STRING = 'mongodb+srv://test:test@cluster0.7bgts.mongodb.net/cluster0?retryWrites=true&w=majority';
 mongoose.connect(DB_STRING, { useNewUrlParser: true, useUnifiedTopology: true });
+
+let json = {}
 
 // creating a schema
 const todoSchema = new mongoose.Schema({
@@ -18,8 +19,6 @@ const todoCtgSchema = new mongoose.Schema({
 } , {
   collection: 'todoCtg'
 });
-
-let json = {}
 
 // creating a model based on a schema
 const Todo = mongoose.model('Todo', todoSchema);
