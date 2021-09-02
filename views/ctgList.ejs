@@ -1,0 +1,7 @@
+<p class="select" id="catigory">    
+    <select name="ctgs" id="ctgs" placeholder="select">
+        <% json.todoCtg.forEach(function(ctg){ %>
+            <%- include('ctgListItems', {ctg : ctg}); -%>
+        <% }); %>
+    </select>
+</p>

@@ -1,15 +1,8 @@
 <div id="dropdown">
     <label for="ctgs">Choose a catigory:</label>
-    <p class="select" id="catigory">    
-        <select name="ctgs" id="ctgs" placeholder="select">
-            <% ctgs.forEach(function(ctg){ %>
-                <%- include('ctgListItems', {ctg : ctg}); -%>
-            <% }); %>
-        </select>
-    </p>
-    <div id="ctg-div">
-        <button type="button" id='add-ctg-btn'> Add a catigory</button>
-        <!-- <label for="add-ctg">Add catigory</label> -->
-        <input id="add-ctg" type="text" name="add-ctg" placeholder="Add more catigories here..">
-    </div>
+    <p id='dlt-this'>
+<%- include('ctgList') -%>
+    </p>   
+    <button type="button" id='ctg-show-btn' action="todo/ctg/:ctg"> Show items from catigory</button>
+    <button type="button" id="ctg-clear-all">Reset all catigories</button> 
 </div>

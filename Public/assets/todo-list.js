@@ -2,30 +2,55 @@
 $(document).ready(function(){
    //this line is to watch the result in console , you can remove it later
   // const refreshtoCtgList = (ctglist) => {
-  //   let cList = $('#ctgs');
+  //   let cList = $('#dlt-this');
   //   let dropDown = $('#dropdown')
   //   cList.remove();
-  //   dropdown.append(ctglist);
+  //   dropDown.append(ctglist);
   //   addEventListenterToLi();
   //   addEventListenterToDeleteAll();
-  //   addEventListenterCtgAddition();
+  //   addEventListenterToCtgClearAll();
   // }	
 
-  const refreshtoDoList = (todolist) => {
+  const refreshtoDoList = (x) => {
     // reload()
     // $("#todo-list").load(location.href + " #todo-list")
     let tList = $('#todo-list');
     let todoTable = $('#todo-table');
     tList.remove();
-    todoTable.append(todolist);
+    todoTable.append(x);
     addEventListenterToLi();
     addEventListenterToDeleteAll();
+    addEventListenterToCtgClearAll();
     // addEventListenterCtgAddition();
   }
 
   function getRandomInt(max) {
     return Math.floor(Math.random() * max);
   }
+
+// add items
+  $('#item-list').on('submit', function(){
+    // console.log($('form').serialize());
+    let item = $('form #item');
+    let desc = $('form #desc');
+    let randomID = getRandomInt(99999)
+    let time = new Date().toLocaleTimeString();
+    let date = new Date().toLocaleDateString();
+    let ctg = $('#ctgs').find(":selected").text();
+    let todo = {item: item.val(), desc: desc.val(), ctg: ctg, id: randomID.toString(), date: date + '-' + time};
+    $.ajax({
+      type: 'POST',
+      url: '/todo/add-item',
+      data: todo,
+      success: function(data){
+        // location.reload();
+        refreshtoDoList(data);
+      }
+    });
+    item.val('');
+    desc.val('');
+    return false;
+  });
 
 // delete this
   const addEventListenterToLi = () => {
@@ -53,13 +78,43 @@ $(document).ready(function(){
         url: '/todo/add-ctg',
         data: todoCtg,
         success: function(data){
-          refreshtoDoList(data);
+          // refreshtoCtgList(data);
         }
       })
     });
   // };
 
-// delete all
+// show this ctg
+  // const addEventlistnerShowCtg = () => {
+    $('#ctg-show-btn').on('click', function(){
+      let ctg = $('#ctgs').find(":selected").text();
+      $.ajax({
+        type: 'GET',
+        url: '/todo/ctg/' + ctg,
+        success: function(data){
+          window.open('/todo/ctg/' + ctg)
+        }
+      });
+    });
+  // };
+
+
+// delete all catigories 
+  const addEventListenterToCtgClearAll = () => {
+    $('#ctg-clear-all').on('click', function(){
+      // var item1 = $(this).closest('li').find('h3:not(:first-child)').text();
+      $.ajax({
+        type: 'DELETE',
+        url: '/todo/clear-all-ctg',
+        success: function(data){
+          //do something with the data via front-end framework
+          // refreshtoCtgList(data);
+        }
+      });
+    });
+  };
+
+// delete all items
   const addEventListenterToDeleteAll = () => {
     $('#clear').on('click', function(){
       $.ajax({
@@ -72,32 +127,11 @@ $(document).ready(function(){
     });
   };
 
-// add items
-  $('#item-list').on('submit', function(){
-      // console.log($('form').serialize());
-      let item = $('form #item');
-      let desc = $('form #desc');
-      let randomID = getRandomInt(99999)
-      let time = new Date().toLocaleTimeString();
-      let date = new Date().toLocaleDateString();
-      let ctg = $('#ctgs').find(":selected").text();
-      let todo = {item: item.val(), desc: desc.val(), ctg: ctg, id: randomID.toString(), date: date + '-' + time};
-      $.ajax({
-        type: 'POST',
-        url: '/todo/add-item',
-        data: todo,
-        success: function(data){
-          // location.reload();
-          refreshtoDoList(data);
-        }
-      });
-      item.val('');
-      desc.val('');
-      return false;
-  });
 
+  // addEventlistnerShowCtg();
   addEventListenterToLi();
   addEventListenterToDeleteAll();
+  addEventListenterToCtgClearAll();
   // addEventListenterCtgAddition();
   });
 

@@ -1,0 +1,12 @@
+<%- include('header') -%>
+<div>
+    <a href="/todo"><button>Go Back</button></a>
+</div>
+<div>
+    <ul id="todo-list">
+    <% json.forEach(function(item){ %>
+      <%- include('todoListItem', {item: item}); %>
+    <% }); %>
+    </ul>
+</div>
+<%- include('footer') -%>

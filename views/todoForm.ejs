@@ -7,25 +7,17 @@
         <label for="desc">Description</label>
         <input id="desc" type="text" name="desc" placeholder="Add item's description here.." required>
     </div>
-    <div id="dropdown">
-        <label for="ctgs">Choose a catigory:</label>
-        <p class="select" id="catigory">    
-            <select name="ctgs" id="ctgs" placeholder="select">
-                <option value="food">Food</option>
-                <option value="personal">Personal</option>
-                <option value="work">Work</option>
-                <option value="school">School</option>
-            </select>
-        </p>
-    </div>
-    <div>
+<%- include('newCtgForm') -%>
+    
+    <div id="btns">
         <button type="submit">Add item</button>
-        <button type="button" id='clear'> Clear all</button>
+        <button type="button" id='clear'> Clear all items</button>
     </div>
 </form>
 <form id="ctg-div">
     <div>
-        <button type="submit" id='ctg-submit-btn'> Add a catigory</button>
+        <button type="submit" id='ctg-submit-btn'> Add new catigory</button>
         <input id="ctg-input" type="text" name="ctg-input" placeholder="Add more catigories here.." required>
     </div>
 </form>
+<div id='styleblock'>Items' list</div>

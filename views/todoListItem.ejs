@@ -1,18 +1,16 @@
 <li>
-    <p id=<%=item.id%>>  
+    <div id=<%=item.id%>>  
         <H2>Item:</H2> <%=item.item%>
-    </p>
-    <p>
+        <button type="button" id=<%=item.id%> class='dlt' >Delete This Item</button>
+    </div>
+    <div>
         <H2>Description:</H2> <%= item.desc %>
-    </p>
-    <P> 
+    </div>
+    <div> 
         <H2>Category: </H2><%=item.ctg%>
-    </P>
-    <P> 
+    </div>
+    <div> 
         <H2>Date: </H2><%=item.date%>
-    </P>
-
-    <h3 id='item-id'><%=item.id%></h3>
-
-    <button type="button" id=<%=item.id%> class='dlt' >Delete This Item</button>
+    </div>
+    
 </li>
