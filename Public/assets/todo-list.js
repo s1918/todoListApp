@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 $(document).ready(function(){
-   //this line is to watch the result in console , you can remove it later
   // const refreshtoCtgList = (ctglist) => {
   //   let cList = $('#dlt-this');
   //   let dropDown = $('#dropdown')
@@ -30,7 +29,6 @@ $(document).ready(function(){
 
 // add items
   $('#item-list').on('submit', function(){
-    // console.log($('form').serialize());
     let item = $('form #item');
     let desc = $('form #desc');
     let randomID = getRandomInt(99999)
@@ -43,7 +41,6 @@ $(document).ready(function(){
       url: '/todo/add-item',
       data: todo,
       success: function(data){
-        // location.reload();
         refreshtoDoList(data);
       }
     });
@@ -55,59 +52,49 @@ $(document).ready(function(){
 // delete this
   const addEventListenterToLi = () => {
     $('.dlt').on('click', function(){
-      // var item1 = $(this).closest('li').find('h3:not(:first-child)').text();
       var item1 = $(this).attr('id')
       $.ajax({
         type: 'DELETE',
         url: '/todo/clear-item/' + item1,
         success: function(data){
-          //do something with the data via front-end framework
           refreshtoDoList(data);
         }
       });
     });
   };
   
-// add catigories
-  // const addEventListenterCtgAddition = () => {
-    $('#ctg-div').on('submit', function(){
-      let ctg = $('#ctg-input');
-      let todoCtg = {ctg: ctg.val()};
-      $.ajax({
-        type: 'POST',
-        url: '/todo/add-ctg',
-        data: todoCtg,
-        success: function(data){
-          // refreshtoCtgList(data);
-        }
-      })
-    });
-  // };
+  $('#ctg-div').on('submit', function(){
+    let ctg = $('#ctg-input');
+    let todoCtg = {ctg: ctg.val()};
+    $.ajax({
+      type: 'POST',
+      url: '/todo/add-ctg',
+      data: todoCtg,
+      success: function(data){
+        // refreshtoCtgList(data);
+      }
+    })
+  });
 
 // show this ctg
-  // const addEventlistnerShowCtg = () => {
-    $('#ctg-show-btn').on('click', function(){
-      let ctg = $('#ctgs').find(":selected").text();
-      $.ajax({
-        type: 'GET',
-        url: '/todo/ctg/' + ctg,
-        success: function(data){
-          window.open('/todo/ctg/' + ctg)
-        }
-      });
+  $('#ctg-show-btn').on('click', function(){
+    let ctg = $('#ctgs').find(":selected").text();
+    $.ajax({
+      type: 'GET',
+      url: '/todo/ctg/' + ctg,
+      success: function(data){
+        window.open('/todo/ctg/' + ctg)
+      }
     });
-  // };
-
+  });
 
 // delete all catigories 
   const addEventListenterToCtgClearAll = () => {
     $('#ctg-clear-all').on('click', function(){
-      // var item1 = $(this).closest('li').find('h3:not(:first-child)').text();
       $.ajax({
         type: 'DELETE',
         url: '/todo/clear-all-ctg',
         success: function(data){
-          //do something with the data via front-end framework
           // refreshtoCtgList(data);
         }
       });
@@ -127,30 +114,7 @@ $(document).ready(function(){
     });
   };
 
-
-  // addEventlistnerShowCtg();
   addEventListenterToLi();
   addEventListenterToDeleteAll();
   addEventListenterToCtgClearAll();
-  // addEventListenterCtgAddition();
-  });
-
-  
-
-  // tList.append(todolist.map((row) => `<li>
-  // <p>
-  // <H2>Item:</H2>${row.item}
-  // </p>
-  // <p>
-  // <H2>Description:</H2> ${row.desc}
-  // </p>
-  // <P> 
-  // <H2>Category: </H2>${row.catg}
-  // </P>
-  // <P> 
-  // <H2>Date: </H2>${row.date}
-  // </P>
-  // <h3 id='item-id'>${row.id}</h3>
-  // <button type="button" id=${row.id} class='dlt' >Delete This Item</button>
-  // </li>`).reduce((acc, ele) => acc += ele, ''));
-  
+});

@@ -26,7 +26,6 @@ const Todo = mongoose.model('Todo', todoSchema);
 const todoCtg = mongoose.model('todoCtg', todoCtgSchema);
 
 module.exports = (app) => {
-
 // get req
   app.get('/todo', (req, res) => {
     todoCtg.find({}, (err, data) => {
@@ -120,69 +119,5 @@ module.exports = (app) => {
       });
     });
   });
-
-
-  // delete item
-  // app.delete('/todo/clear-item/:item', function(req, res){
-  //     Todo.find({item: req.params.item.replace(/\-/g, " ")}).remove(function(err, data){
-  //         if (err) throw err;
-  //         // res.json(data);
-  //         Todo.find({}, function(err, data){
-  //             if (err) throw err;
-  //             res.json(data);
-  //         });
-  //     });
-  // });
-
-  // app.delete('/todo/clear-dublct', function(req, res){
-  //     Todo.find({}).remove(function(err, data){
-  //         if (err) throw err;
-  //         // res.json(data);
-  //         Todo.find({}, function(err, data){
-  //             if (err) throw err;
-  //             res.json(data);
-  //         });
-  //     });
-  // });
-
 }
-
-
-// testing the database 
-// let itemOne = Todo({item: 'Do stuff'}).save(function(err){
-//     if (err) throw err;
-//     console.log('item saved');
-// });
-
-// // render from local data
-// app.get('/todo', function(req,res){
-//     res.render('todo', {todos: data});
-//     // res.render('test');
-// });
-
-// // test item description in new page
-// app.get('/todo/:item', function(req,res){
-//     res.render('item', {todoitem: req.params.item});
-//     // res.render('test');
-// });
-
-// app.get('/todo/:item/:x', function(req,res){
-//     res.render('2item', {todoitem: req.params.item});
-//     // res.render('test');
-// });
-
-// app.post('/todo', function(req,res){
-//     data.push(req.body);
-//     res.json(data);
-//     console.log(data);
-// });
-
-// app.delete('/todo/:item', function(req, res){
-//     data = data.filter(function(todo){
-//         return todo.item.replace(/ /g, '-') !== req.params.item;
-//     })
-//     res.json(data);
-// });
-
-
 
