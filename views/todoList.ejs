@@ -1,6 +1,6 @@
 <div>
   <ul id="todo-list">
-  <% json.todoItems.forEach(function(item){ %>
+  <% todoItems.forEach(function(item){ %>
     <%- include('todoListItem', {item: item}); %>
   <% }); %>
   </ul>

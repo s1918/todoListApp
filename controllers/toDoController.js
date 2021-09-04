@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const DB_STRING = 'mongodb+srv://test:test@cluster0.7bgts.mongodb.net/cluster0?retryWrites=true&w=majority';
 mongoose.connect(DB_STRING, { useNewUrlParser: true, useUnifiedTopology: true });
 
-let json = {}
+
 
 // creating a schema
 const todoSchema = new mongoose.Schema({
@@ -27,22 +27,20 @@ const todoCtg = mongoose.model('todoCtg', todoCtgSchema);
 module.exports = (app) => {
 // get req
   app.get('/todo', (req, res) => {
-    todoCtg.find({}, (err, data) => {
+    todoCtg.find({}, (err, categories) => {
       if (err) throw err;
-      json.todoCtg = data;
-      Todo.find({}, (err, data) => {
+      Todo.find({}, (err, todoItems) => {
         if (err) throw err;
-        json.todoItems = data;
-        res.render('todo', { json: json });
+        res.render('todo', { categories: categories, todoItems: todoItems });
       });
     });
   });
 
 // show one item details
   app.get('/todo/:itemId', function(req,res){
-    Todo.findOne({id: req.params.itemId}, function(err, data){
+    Todo.findOne({id: req.params.itemId}, function(err, item){
       if (err) throw err;
-      res.render('item', {todoitem: data});
+      res.render('item', {todoitem: item});
     })
   });
 
@@ -50,10 +48,9 @@ module.exports = (app) => {
   app.post('/todo/add-item', function(req,res){
     Todo(req.body).save(function(err, todo){
       if (err) throw err;
-      Todo.find({}, function(err, data){
-        json.todoItems = data;
+      Todo.find({}, function(err, todoItems){
         if (err) throw err;
-        res.render('todoList', {json: json});
+        res.render('todoList', {todoItems: todoItems});
         // res.json(data);
       });
     });
@@ -64,24 +61,30 @@ module.exports = (app) => {
     Todo.find({id: req.params.item}).remove(function(err, data){
       if (err) throw err;
       // res.json(data);
-      Todo.find({}, function(err, data){
+      Todo.find({}, function(err, todoItems){
         if (err) throw err;
-        json.todoItems = data;
-        res.render('todoList', {json: json});
+        res.render('todoList', {todoItems: todoItems});
       });
     });
   });
 
 // add new catigory
   app.post('/todo/add-ctg', function(req,res){
+    // if (todoCtg.find( { sad: { $exists: true } } )) {
+
+    //   console.log('already there')
+    // }
+    todoCtg.find( { ctg: { $exists: false } } ), function(err, data){
+      if (err) throw err;
+      console.log('false')
+    }
     todoCtg(req.body).save(function(err, data){
       if (err) throw err;
-      todoCtg.find({}, function(err, data){
-        json.todoCtg = data;
-        if (err) throw err;
-        // res.render('newCtgForm', {json: json});
-        res.json(data);
-      })
+      todoCtg.find({}, function(err, categories){
+          if (err) throw err;
+          res.render('ctgList', {categories: categories});
+          // res.json(data);
+        });
     });
   });
 
@@ -89,20 +92,19 @@ module.exports = (app) => {
   app.delete('/todo/clear-all-ctg', function(req, res){
     todoCtg.find({}).remove(function(err, data){
       if (err) throw err;
-      todoCtg.find({}, function(err, data){
-        json.todoCtg = data;
-        if (err) throw err;
-        // res.render('newCtgForm', {json: json});
-        res.json(data);
-      });
+      todoCtg.find({}, function(err, categories){
+          if (err) throw err;
+          res.render('ctgList', {categories: categories});
+          // res.json(data);
+        });
     });
   });
 
 // show this ctg 
   app.get('/todo/ctg/:ctg', function(req, res){
-    Todo.find({ctg: req.params.ctg}, function(err, data){
+    Todo.find({ctg: req.params.ctg}, function(err, todoItemsFromSameCtg){
       if (err) throw err;
-      res.render('todoCtgOnly', {json: data});
+      res.render('todoCtgOnly', {todoItems: todoItemsFromSameCtg});
     });
   });
 
@@ -111,10 +113,9 @@ module.exports = (app) => {
     Todo.find({}).remove(function(err, data){
       if (err) throw err;
       // res.json(data);
-      Todo.find({}, function(err, data){
+      Todo.find({}, function(err, todoItems){
         if (err) throw err;
-        json.todoItems = data;
-        res.json(data);
+        res.json(todoItems);
       });
     });
   });

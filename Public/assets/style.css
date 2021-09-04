@@ -108,6 +108,31 @@ select {
     --select-arrow: var(--select-border);
 }
 
+
+/* .dropdown:before {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    width: 0; 
+    height: 0; 
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #f00;
+}
+
+.dropdown:after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 3px;
+    width: 0; 
+    height: 0; 
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #333;
+} */
+
 .select {
     display: inline-block;
     width: 100%;
@@ -291,4 +316,15 @@ li *{
     text-align: center;
     font-size: 200%;
 }
+
+#goback-btn-div{
+    margin: auto;
+    width: 49.75%;
+}
+
+#goback-btn-div button{
+    margin: auto;
+    width: 100%;
+}
+
 

@@ -1,14 +1,19 @@
 /* eslint-disable no-undef */
 $(document).ready(function(){
-  // const refreshtoCtgList = (ctglist) => {
-  //   let cList = $('#dlt-this');
-  //   let dropDown = $('#dropdown')
-  //   cList.remove();
-  //   dropDown.append(ctglist);
-  //   addEventListenterToLi();
-  //   addEventListenterToDeleteAll();
-  //   addEventListenterToCtgClearAll();
-  // }	
+  
+  const alertUser = (msg) => {
+    alert(msg);
+  }
+
+  const refreshtoCtgList = (ctglist) => {
+    let cList = $('#ctgs');
+    let catigoryList = $('#catigory-list')
+    cList.remove();
+    catigoryList.append(ctglist);
+    addEventListenterToLi();
+    addEventListenterToDeleteAll();
+    addEventListenterToCtgClearAll();
+  }	
 
   const refreshtoDoList = (x) => {
     // reload()
@@ -62,7 +67,8 @@ $(document).ready(function(){
       });
     });
   };
-  
+
+// add a new catigory
   $('#ctg-div').on('submit', function(){
     let ctg = $('#ctg-input');
     let todoCtg = {ctg: ctg.val()};
@@ -71,7 +77,7 @@ $(document).ready(function(){
       url: '/todo/add-ctg',
       data: todoCtg,
       success: function(data){
-        // refreshtoCtgList(data);
+        refreshtoCtgList(data);
       }
     })
   });
@@ -95,7 +101,7 @@ $(document).ready(function(){
         type: 'DELETE',
         url: '/todo/clear-all-ctg',
         success: function(data){
-          // refreshtoCtgList(data);
+          refreshtoCtgList(data);
         }
       });
     });

@@ -1,7 +1,9 @@
 <div id="dropdown">
     <label for="ctgs">Choose a catigory:</label>
     <p id='dlt-this'>
-<%- include('ctgList') -%>
+        <p class="select" id="catigory-list">  
+    <%- include('ctgList') -%>
+        </p>
     </p>   
     <button type="button" id='ctg-show-btn' action="todo/ctg/:ctg"> Show items from catigory</button>
     <button type="button" id="ctg-clear-all">Reset all catigories</button> 
