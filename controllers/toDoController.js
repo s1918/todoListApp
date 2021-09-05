@@ -38,7 +38,7 @@ module.exports = (app) => {
 
   app.get('/todo', async (req, res) => {
     try {
-      const promises =  [todoCtg.find({}), Todo.find({})];
+      const promises = [todoCtg.find({}), Todo.find({})];
       // const [categs, todos] = await Promise.all(promises);
       const retList = await Promise.all(promises);
       const categs = retList[0];
@@ -50,15 +50,15 @@ module.exports = (app) => {
   });
 
   // show one item details
-  app.get('/todo/:itemId', async (req,res) => {
+  app.get('/todo/:itemId', async (req, res) => {
     try {
-      const item = await Todo.findOne({id: req.params.itemId});
+      const item = await Todo.findOne({ id: req.params.itemId });
       if (item == null) {
         throw 'Item Not Found';
       }
-      res.render('item', {todoitem: item});
+      res.render('item', { todoitem: item });
     } catch (err) {
-      res.status(404).render('errorPage', {error: err});
+      res.status(404).render('errorPage', { error: err });
     }
   });
 
@@ -68,7 +68,7 @@ module.exports = (app) => {
       if (err) throw err;
       Todo.find({}, function(err, todoItems){
         if (err) throw err;
-        res.render('todoList', {todoItems: todoItems});
+        res.render('todoList', { todoItems: todoItems });
         // res.json(data);
       });
     });

@@ -1,10 +1,5 @@
 /* eslint-disable no-undef */
 $(document).ready(function(){
-  
-  const alertUser = (msg) => {
-    alert(msg);
-  }
-
   const refreshtoCtgList = (ctglist) => {
     let cList = $('#ctgs');
     let catigoryList = $('#catigory-list')
