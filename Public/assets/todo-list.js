@@ -15,24 +15,26 @@ $(document).ready(function(){
     addEventListenterToCtgClearAll();
   }	
 
-  const refreshtoDoList = (x) => {
-    // reload()
-    // $("#todo-list").load(location.href + " #todo-list")
+  const refreshtoDoList = (todoLitsHTMLElem) => {
+    // get old table element and delete it 
     let tList = $('#todo-list');
-    let todoTable = $('#todo-table');
     tList.remove();
-    todoTable.append(x);
+
+    // get table parent and add new table element to it
+    let todoTable = $('#todo-table');
+    todoTable.append(todoLitsHTMLElem);
+
+    // Hook all needed evenets to new elements
     addEventListenterToLi();
     addEventListenterToDeleteAll();
     addEventListenterToCtgClearAll();
-    // addEventListenterCtgAddition();
   }
 
   function getRandomInt(max) {
     return Math.floor(Math.random() * max);
   }
 
-// add items
+  // add items
   $('#item-list').on('submit', function(){
     let item = $('form #item');
     let desc = $('form #desc');
@@ -45,8 +47,8 @@ $(document).ready(function(){
       type: 'POST',
       url: '/todo/add-item',
       data: todo,
-      success: function(data){
-        refreshtoDoList(data);
+      success: function(todoLitsHTMLElem){
+        refreshtoDoList(todoLitsHTMLElem);
       }
     });
     item.val('');
@@ -54,7 +56,7 @@ $(document).ready(function(){
     return false;
   });
 
-// delete this
+  // delete this
   const addEventListenterToLi = () => {
     $('.dlt').on('click', function(){
       var item1 = $(this).attr('id')
@@ -68,7 +70,7 @@ $(document).ready(function(){
     });
   };
 
-// add a new catigory
+  // add a new category
   $('#ctg-div').on('submit', function(){
     let ctg = $('#ctg-input');
     let todoCtg = {ctg: ctg.val()};
@@ -82,7 +84,7 @@ $(document).ready(function(){
     })
   });
 
-// show this ctg
+  // show this ctg
   $('#ctg-show-btn').on('click', function(){
     let ctg = $('#ctgs').find(":selected").text();
     $.ajax({

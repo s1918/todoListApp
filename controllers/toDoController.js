@@ -26,26 +26,44 @@ const todoCtg = mongoose.model('todoCtg', todoCtgSchema);
 
 module.exports = (app) => {
 // get req
-  app.get('/todo', (req, res) => {
-    todoCtg.find({}, (err, categories) => {
-      if (err) throw err;
-      Todo.find({}, (err, todoItems) => {
-        if (err) throw err;
-        res.render('todo', { categories: categories, todoItems: todoItems });
-      });
-    });
+  // app.get('/todo', (req, res) => {
+  //   todoCtg.find({}, (err, categories) => {
+  //     if (err) throw err;
+  //     Todo.find({}, (err, todoItems) => {
+  //       if (err) throw err;
+  //       res.render('todo', { categories: categories, todoItems: todoItems });
+  //     });
+  //   });
+  // });
+
+  app.get('/todo', async (req, res) => {
+    try {
+      const promises =  [todoCtg.find({}), Todo.find({})];
+      // const [categs, todos] = await Promise.all(promises);
+      const retList = await Promise.all(promises);
+      const categs = retList[0];
+      const todos = retList[1];
+      res.render('todo', { categories: categs, todoItems: todos });
+    } catch (error) {
+      res.status(404).render('errorPage', { error: error });
+    }
   });
 
-// show one item details
-  app.get('/todo/:itemId', function(req,res){
-    Todo.findOne({id: req.params.itemId}, function(err, item){
-      if (err) throw err;
+  // show one item details
+  app.get('/todo/:itemId', async (req,res) => {
+    try {
+      const item = await Todo.findOne({id: req.params.itemId});
+      if (item == null) {
+        throw 'Item Not Found';
+      }
       res.render('item', {todoitem: item});
-    })
+    } catch (err) {
+      res.status(404).render('errorPage', {error: err});
+    }
   });
 
-// add items 
-  app.post('/todo/add-item', function(req,res){
+  // add items 
+  app.post('/todo/add-item', (req,res) => {
     Todo(req.body).save(function(err, todo){
       if (err) throw err;
       Todo.find({}, function(err, todoItems){
@@ -56,28 +74,32 @@ module.exports = (app) => {
     });
   });
 
-// clear one item 
+  // clear one item 
   app.delete('/todo/clear-item/:item', function(req, res){
-    Todo.find({id: req.params.item}).remove(function(err, data){
-      if (err) throw err;
-      // res.json(data);
-      Todo.find({}, function(err, todoItems){
+    Todo
+    .find({id: req.params.item})
+    .remove(
+      function(err, data){
         if (err) throw err;
-        res.render('todoList', {todoItems: todoItems});
-      });
+        // res.json(data);
+        Todo.find({}, 
+          function(err, todoItems){
+            if (err) throw err;
+            res.render('todoList', {todoItems: todoItems});
+        });
     });
   });
 
-// add new catigory
+  // add new catigory
   app.post('/todo/add-ctg', function(req,res){
     // if (todoCtg.find( { sad: { $exists: true } } )) {
 
     //   console.log('already there')
     // }
-    todoCtg.find( { ctg: { $exists: false } } ), function(err, data){
-      if (err) throw err;
-      console.log('false')
-    }
+    // todoCtg.find( { ctg: { $exists: false } } ), function(err, data){
+    //   if (err) throw err;
+    //   console.log('false')
+    // }
     todoCtg(req.body).save(function(err, data){
       if (err) throw err;
       todoCtg.find({}, function(err, categories){
@@ -88,7 +110,7 @@ module.exports = (app) => {
     });
   });
 
-//clear all ctg items
+  //clear all ctg items
   app.delete('/todo/clear-all-ctg', function(req, res){
     todoCtg.find({}).remove(function(err, data){
       if (err) throw err;
@@ -100,7 +122,7 @@ module.exports = (app) => {
     });
   });
 
-// show this ctg 
+  // show this ctg 
   app.get('/todo/ctg/:ctg', function(req, res){
     Todo.find({ctg: req.params.ctg}, function(err, todoItemsFromSameCtg){
       if (err) throw err;
@@ -108,7 +130,7 @@ module.exports = (app) => {
     });
   });
 
-//clear all list items
+  //clear all list items
   app.delete('/todo/clear-all', function(req, res){
     Todo.find({}).remove(function(err, data){
       if (err) throw err;
