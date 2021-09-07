@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
-// connect to database 
+// connect to database
 const DB_STRING = 'mongodb+srv://test:test@cluster0.7bgts.mongodb.net/cluster0?retryWrites=true&w=majority';
 mongoose.connect(DB_STRING, { useNewUrlParser: true, useUnifiedTopology: true });
-
-
 
 // creating a schema
 const todoSchema = new mongoose.Schema({
@@ -16,8 +14,8 @@ const todoSchema = new mongoose.Schema({
 
 const todoCtgSchema = new mongoose.Schema({
   ctg: String,
-} , {
-  collection: 'todoCtg'
+}, {
+  collection: 'todoCtg',
 });
 
 // creating a model based on a schema
@@ -35,6 +33,15 @@ module.exports = (app) => {
   //     });
   //   });
   // });
+  const getItemsAndRefresh = async (res) => {
+    const itemsList = await Todo.find({});
+    res.render('todoList', { todoItems: itemsList });
+  };
+
+  const getCtgsAndRefresh = async (res) => {
+    const findCtg = await todoCtg.find();
+    res.render('ctgList', { categories: findCtg });
+  };
 
   app.get('/todo', async (req, res) => {
     try {
@@ -45,7 +52,7 @@ module.exports = (app) => {
       const todos = retList[1];
       res.render('todo', { categories: categs, todoItems: todos });
     } catch (error) {
-      res.status(404).render('errorPage', { error: error });
+      res.status(404).render('errorPage', { error });
     }
   });
 
@@ -54,7 +61,7 @@ module.exports = (app) => {
     try {
       const item = await Todo.findOne({ id: req.params.itemId });
       if (item == null) {
-        throw 'Item Not Found';
+        throw new Error();
       }
       res.render('item', { todoitem: item });
     } catch (err) {
@@ -62,84 +69,47 @@ module.exports = (app) => {
     }
   });
 
-  // add items 
-  app.post('/todo/add-item', (req,res) => {
-    Todo(req.body).save(function(err, todo){
-      if (err) throw err;
-      Todo.find({}, function(err, todoItems){
-        if (err) throw err;
-        res.render('todoList', { todoItems: todoItems });
-        // res.json(data);
-      });
-    });
+  // add items
+  app.post('/todo/add-item', async (req, res) => {
+    try {
+      await Todo(req.body).save();
+      getItemsAndRefresh(res);
+    } catch (error) {
+      res.status(404).render('errorPage', { error });
+    }
   });
 
-  // clear one item 
-  app.delete('/todo/clear-item/:item', function(req, res){
-    Todo
-    .find({id: req.params.item})
-    .remove(
-      function(err, data){
-        if (err) throw err;
-        // res.json(data);
-        Todo.find({}, 
-          function(err, todoItems){
-            if (err) throw err;
-            res.render('todoList', {todoItems: todoItems});
-        });
-    });
+  // clear one item
+  app.delete('/todo/clear-item/:item', async (req, res) => {
+    try {
+      await Todo.find({ id: req.params.item }).remove();
+      getItemsAndRefresh(res);
+    } catch (error) {
+      res.status(404).render('errorPage', { error });
+    }
   });
 
   // add new catigory
-  app.post('/todo/add-ctg', function(req,res){
-    // if (todoCtg.find( { sad: { $exists: true } } )) {
-
-    //   console.log('already there')
-    // }
-    // todoCtg.find( { ctg: { $exists: false } } ), function(err, data){
-    //   if (err) throw err;
-    //   console.log('false')
-    // }
-    todoCtg(req.body).save(function(err, data){
-      if (err) throw err;
-      todoCtg.find({}, function(err, categories){
-          if (err) throw err;
-          res.render('ctgList', {categories: categories});
-          // res.json(data);
-        });
-    });
+  app.post('/todo/add-ctg', async (req, res) => {
+    await todoCtg(req.body).save();
+    getCtgsAndRefresh(res);
   });
 
-  //clear all ctg items
-  app.delete('/todo/clear-all-ctg', function(req, res){
-    todoCtg.find({}).remove(function(err, data){
-      if (err) throw err;
-      todoCtg.find({}, function(err, categories){
-          if (err) throw err;
-          res.render('ctgList', {categories: categories});
-          // res.json(data);
-        });
-    });
+  // clear all ctg items
+  app.delete('/todo/clear-all-ctg', async (req, res) => {
+    await todoCtg.find({}).remove();
+    getCtgsAndRefresh(res);
   });
 
-  // show this ctg 
-  app.get('/todo/ctg/:ctg', function(req, res){
-    Todo.find({ctg: req.params.ctg}, function(err, todoItemsFromSameCtg){
-      if (err) throw err;
-      res.render('todoCtgOnly', {todoItems: todoItemsFromSameCtg});
-    });
+  // show this ctg
+  app.get('/todo/ctg/:ctg', async (req, res) => {
+    const sameCtgItems = await Todo.find({ ctg: req.params.ctg });
+    res.render('todoCtgOnly', { todoItems: sameCtgItems });
   });
 
-  //clear all list items
-  app.delete('/todo/clear-all', function(req, res){
-    Todo.find({}).remove(function(err, data){
-      if (err) throw err;
-      // res.json(data);
-      Todo.find({}, function(err, todoItems){
-        if (err) throw err;
-        res.json(todoItems);
-      });
-    });
+  // clear all list items
+  app.delete('/todo/clear-all', async (req, res) => {
+    await Todo.find({}).remove();
+    getItemsAndRefresh(res);
   });
-}
-
+};
