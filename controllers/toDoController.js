@@ -23,7 +23,7 @@ const Todo = mongoose.model('Todo', todoSchema);
 const todoCtg = mongoose.model('todoCtg', todoCtgSchema);
 
 module.exports = (app) => {
-// get req
+  // get req
   // app.get('/todo', (req, res) => {
   //   todoCtg.find({}, (err, categories) => {
   //     if (err) throw err;
@@ -33,8 +33,9 @@ module.exports = (app) => {
   //     });
   //   });
   // });
-  const getItemsAndRefresh = async (res) => {
-    const itemsList = await Todo.find({});
+
+  const getItemsAndRefresh = async (res, prop, key) => {
+    const itemsList = await Todo.find({ prop: key });
     res.render('todoList', { todoItems: itemsList });
   };
 

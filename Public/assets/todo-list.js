@@ -35,11 +35,11 @@ $(document).ready(() => {
 
   // delete this
   const addEventListenterToLi = () => {
-    $('.dlt').on('click', () => {
+    $('.dlt').on('click', function () {
       const item1 = $(this).attr('id');
       $.ajax({
         type: 'DELETE',
-        url: `/todo/clear-item/ ${item1}`,
+        url: `/todo/clear-item/${item1}`,
         success: (data) => {
           // eslint-disable-next-line no-use-before-define
           refreshtoDoList(data);
