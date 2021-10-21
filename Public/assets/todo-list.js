@@ -4,6 +4,8 @@ $(document).ready(() => {
     return Math.floor(Math.random() * max);
   }
 
+
+  // add random comment
   // add items
   $('#item-list').on('submit', () => {
     const item = $('form #item');
