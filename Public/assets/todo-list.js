@@ -36,6 +36,7 @@ $(document).ready(() => {
   });
 
   // delete this
+  // testing 
   const addEventListenterToLi = () => {
     $('.dlt').on('click', function () {
       const item1 = $(this).attr('id');
